@@ -12,5 +12,6 @@
 
 void executeCommand(char *buffer, char **tokenized_buf);
 void handleCommand(char **buffer, size_t *buffer_size, ssize_t *read);
+void execute_command(const char *cmd);
 
 #endif
