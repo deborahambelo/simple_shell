@@ -1,12 +1,8 @@
 TEST_SUITE
 Genius
 .runchecker
-runchecker.bash
 # Ignore executables
-*.o
-*.out
-shell
-task2
+runchecker.bash
 
 # Ignore the TEST_SUITE directory
 TEST_SUITE/
