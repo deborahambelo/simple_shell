@@ -1,0 +1,12 @@
+TEST_SUITE
+Genius
+.runchecker
+# Ignore executables
+*.o
+*.out
+shell
+task2
+
+# Ignore the TEST_SUITE directory
+TEST_SUITE/
+

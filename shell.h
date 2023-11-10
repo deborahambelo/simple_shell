@@ -10,8 +10,7 @@
 #include <sys/wait.h>
 #include <sys/stat.h>
 
-void executeCommand(char *buffer, char **tokenized_buf);
+void executeCommand(char *buffer);
 void handleCommand(char **buffer, size_t *buffer_size, ssize_t *read);
-void execute_command(const char *cmd);
 
 #endif
