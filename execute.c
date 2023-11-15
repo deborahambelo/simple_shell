@@ -27,37 +27,8 @@ void handleCommand(char **buffer, size_t *buffer_size, ssize_t *read)
  */
 void executeCommand(char *buffer)
 {
-    char *token;
     int status;
     pid_t child_pid;
-    int i;
-    char **tokenized_buf;
-
-    int token_count = 0;
-    char *temp = strdup(buffer);
-    token = strtok(temp, " \t\n");
-    while (token)
-    {
-        token_count++;
-        token = strtok(NULL, " \t\n");
-    }
-    free(temp);
-
-    tokenized_buf = malloc((token_count + 1) * sizeof(char *));
-    if (tokenized_buf == NULL)
-    {
-        perror("malloc");
-        exit(EXIT_FAILURE);
-    }
-
-    i = 0;
-    token = strtok(buffer, " \t\n");
-    while (token)
-    {
-        tokenized_buf[i++] = token;
-        token = strtok(NULL, " \t\n");
-    }
-    tokenized_buf[i] = NULL;
 
     child_pid = fork();
 
@@ -69,7 +40,8 @@ void executeCommand(char *buffer)
 
     if (child_pid == 0)
     {
-        if (execve(tokenized_buf[0], tokenized_buf, NULL) == -1)
+        
+        if (execlp("sh", "sh", "-c", buffer, (char *)NULL) == -1)
         {
             perror("./shell");
             exit(EXIT_FAILURE);
@@ -79,6 +51,5 @@ void executeCommand(char *buffer)
     {
         waitpid(child_pid, &status, 0);
     }
-
-    free(tokenized_buf);
 }
+       
