@@ -142,4 +142,38 @@ char *string_subtract(char const *str, unsigned int start, size_t length);
 void free_memory(void **array);
 void delete_string_array(char **array);
 
+/*dollSpecial*/
+void ExitcodeProSet(int program);
+
+/*Get_history_lines_count*/
+void adjust_COUNTLINE(void);
+
+/*Handle_var_replacement*/
+void process_VariableReplace(char **c_md);
+
+/*help*/
+int rd_ln(const int fd, char **ln);
+int     f_read_line(char **str, char **ln, int fd);
+int _help(char **command);
+
+/*Own_memory*/
+void *_realloc(void *data_ptr, unsigned int previous_size,
+                unsigned int updated_size);
+
+/*puts*/
+int _print_str(char *str);
+
+/*Strcpy*/
+char *_strcpy(char *dest, char *src);
+
+/*Strncpy*/
+char *bounded_strncpy(char *dest, char *src, int n);
+
+/*Strtok*/
+char *_strtok(char *str, char *delimiter);
+int is_delimiter_char(char b, char *delimiter);
+
+/*Write_history*/
+void write_history(void);
+
 #endif /* __SHELL_H */
