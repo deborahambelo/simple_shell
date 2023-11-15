@@ -10,7 +10,7 @@ void env(void)
 
 	for (i = 0; env[i]; i++)
 	{
-		write(STDOUT_FILENO, env[i], _strleng(env[i]));
+		write(STDOUT_FILENO, env[i], get_string_length(env[i]));
 		write(STDOUT_FILENO, "\n", 1);
 	}
 
@@ -57,7 +57,7 @@ int _setenv(char *name, char *value)
 		free(__environ[env_index]);
 	}
 
-	new_var_len = _strleng(name) + _strleng(value) + 2;
+	new_var_len = get_string_length(name) + get_string_length(value) + 2;
 	/* store the env var either if it exists or it needs to be overwritten */
 	__environ[env_index] = allocate_memory(sizeof(char) * new_var_len);
 	bounded_strcpy(__environ[env_index], name);
@@ -108,7 +108,7 @@ int _cd(char *path)
 	char *oldpwd;
 	char *_path = path;
 
-	if (_strcmp(path, "-") == 0)
+	if (compare_strings(path, "-") == 0)
 		path = _getenv("OLDPWD");
 
 	if (path == NULL)
@@ -151,17 +151,17 @@ int _cd(char *path)
 int _alias(char **commands)
 {
 	int status = 0;
-	list_t *curr;
+	list_t *current;
 	list_t *out_head = NULL;
 	list_t **alias_addrs = get_alias_head();
 
 	/* the alias args starts from position 1 */
 	if (commands[1] == NULL)
 	{ /* This means to list all the aliases */
-		for (curr = *alias_addrs; curr != NULL; curr = curr->next)
+		for (current = *alias_addrs; current != NULL; current = current->next)
 		{
-			_puts(curr->str);
-			_puts("\n");
+			_print_str(current->str);
+			_print_str("\n");
 		}
 		ExitcodeProSet(0);
 		return (1);
@@ -169,10 +169,10 @@ int _alias(char **commands)
 	/* List aliases and sets the aliases that have the form name=value */
 	status = handle_alias_args(commands, &out_head);
 	/* print listed alias */
-	for (curr = out_head; curr != NULL; curr = curr->next)
+	for (current = out_head; current != NULL; current = current->next)
 	{
-		_puts(curr->str);
-		_puts("\n");
+		_print_str(current->str);
+		_print_str("\n");
 	}
 	/* free list */
 	free_list(out_head);
