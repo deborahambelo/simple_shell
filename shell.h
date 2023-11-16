@@ -176,4 +176,30 @@ int is_delimiter_char(char b, char *delimiter);
 /*Write_history*/
 void write_history(void);
 
+/*Firstbuiltin_utils.c*/
+int validate_env_name(char *name);
+int is_valid_env_var_name(char *name);
+int get_env_index(char *name);
+
+
+/*History.c*/
+void handle_history(char *buffer);
+void free_history(void);
+list_t **get_last_cmd_addrss();
+list_t **get_history_addrss();
+
+
+/*builtinsFirst.c*/
+int _alias(char **commands);
+
+
+/*FirstAlias_list.c*/
+void handle_aliases(char **commands);
+list_t **get_alias_head();
+int is_set_alias(char *mem_alias_pair);
+void set_alias(char *mem_alias_pair);
+int handle_alias_args(char **commands, list_t **out_addrs);
+void handle_aliases(char **commands);
+
+
 #endif /* __SHELL_H */
