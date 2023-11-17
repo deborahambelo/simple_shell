@@ -107,7 +107,7 @@ char *dup_str(char *s);
 void free_dbp(char **dp);
 void release_memory(char *buffer, char **cmds_list, char **cmd_args, int flags);
 
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);   ???
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size); 
 
 /* handle_builtins */
 int processBuiltins(char **args);
@@ -134,7 +134,7 @@ char *concatenate_strings_n(char *dest, const char *src, size_t n);
 int compare_strings(const char *str1, const char *str2);
 char *number_to_string(int num);
 int comp_nstrings(const char *str1, const char *str2, size_t n);
-int _puts(char *str);  ???
+int _puts(char *str); 
 
 /* strings01 */
 char *string_concat(char const *str1, char const *str2);
@@ -153,8 +153,8 @@ void process_VariableReplace(char **c_md);
 
 /*help*/
 int rd_ln(const int fd, char **ln);
-int     f_read_line(char **str, char **ln, int fd);
-int _help(char **command);
+/*int f_read_line(char **str, char **ln, int fd);*/
+/*int _help(char **command);*/
 
 /*Own_memory*/
 void *_realloc(void *data_ptr, unsigned int previous_size,
@@ -164,42 +164,40 @@ void *_realloc(void *data_ptr, unsigned int previous_size,
 int _print_str(char *str);
 
 /*Strcpy*/
-char *_strcpy(char *dest, char *src);
+/*char *_strcpy(char *dest, char *src);*/
 
 /*Strncpy*/
 char *bounded_strncpy(char *dest, char *src, int n);
 
 /*Strtok*/
-char *_strtok(char *str, char *delimiter);
+/*char *_strtok(char *str, char *delimiter);*/
 int is_delimiter_char(char b, char *delimiter);
 
 /*Write_history*/
-void write_history(void);
+/*void write_history(void);*/
 
 /*Firstbuiltin_utils.c*/
-int validate_env_name(char *name);
-int is_valid_env_var_name(char *name);
+/*int validate_env_name(char *name);
+int is_valid_env_var_name(char *name);*/
 int get_env_index(char *name);
 
 
 /*History.c*/
-void handle_history(char *buffer);
+/*void handle_history(char *buffer);
 void free_history(void);
 list_t **get_last_cmd_addrss();
-list_t **get_history_addrss();
+list_t **get_history_addrss();*/
 
 
 /*builtinsFirst.c*/
-int _alias(char **commands);
+/*int _alias(char **commands);*/
 
 
 /*FirstAlias_list.c*/
-void handle_aliases(char **commands);
-list_t **get_alias_head();
+/*list_t **get_alias_head();
 int is_set_alias(char *mem_alias_pair);
 void set_alias(char *mem_alias_pair);
-int handle_alias_args(char **commands, list_t **out_addrs);
-void handle_aliases(char **commands);
+int handle_alias_args(char **commands, list_t **out_addrs);*/
 
 
 #endif /* __SHELL_H */
