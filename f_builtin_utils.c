@@ -1,10 +1,10 @@
 #include "shell.h"
 
 /**
- * validate_env_name - this program validates a env var name
- * @name: parameter for string to be validated
+ * validate_env_name - Validates a env var name
+ * @name: String to be validated
  *
- * Return: it returns 0 on success but -1 on error
+ * Return: 0, on success, -1 on error
 */
 int validate_env_name(char *name)
 {
@@ -24,10 +24,10 @@ int validate_env_name(char *name)
 }
 
 /**
- * is_valid_env_var_name - this program checks if the env name is valid
- * @name: parameter for string to be checked
+ * is_valid_env_var_name - Checks if the env name is valid
+ * @name: String to be checked
  *
- * Return: it returns 1 if is valid, 0 otherwise
+ * Return: 1 if is valid, 0 otherwise
 */
 int is_valid_env_var_name(char *name)
 {
@@ -41,19 +41,18 @@ int is_valid_env_var_name(char *name)
 }
 
 /**
- * get_env_index - this program check if a env
- * variable exists and returns the index
- * @name: parameter for name to be searched
+ * get_env_index - Check if a env variable exists and returns the index
+ * @name: Name to be searched
  *
- * Return: it returns index of the env var, -1 on error
+ * Return: Index of the env var, -1 on error
 */
 int get_env_index(char *name)
 {
 	int i;
-	int length = get_string_length(name);
+	int len = _strlen(name);
 
 	for (i = 0; __environ[i] != NULL; i++)
-		if (comp_nstrings(__environ[i], name, length) == 0)
+		if (_strncmp(__environ[i], name, len) == 0)
 			return (i);
 
 	return (-1);

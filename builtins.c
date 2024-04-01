@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * env - this program prints the environment variables to stdout
+ * env - Prints the environment variables to stdout
 */
 void env(void)
 {
@@ -10,19 +10,19 @@ void env(void)
 
 	for (i = 0; env[i]; i++)
 	{
-		write(STDOUT_FILENO, env[i], get_string_length(env[i]));
+		write(STDOUT_FILENO, env[i], _strlen(env[i]));
 		write(STDOUT_FILENO, "\n", 1);
 	}
 
-	ExitcodeProSet(0);
+	set_process_exit_code(0);
 }
 
 /**
- * _setenv - program that sets, adds an environment variable
- * @name: parameter for name for the new env variable
- * @value: parameter for value for the new env variable
+ * _setenv - Sets or adds an environment variable
+ * @name: Name for the new env variable
+ * @value: Value for the new env variable
  *
- * Return: it returns 1 on success, -1 on error
+ * Return: 1 on success, -1 on error
  */
 int _setenv(char *name, char *value)
 {
@@ -35,14 +35,14 @@ int _setenv(char *name, char *value)
 	if (env_index == -1)
 	{/* var doen't exist, SO CREATE IT */
 		int env_count = 0;
-		int previous_size, updated_size;
+		int old_size, new_size;
 
 		while (__environ[env_count] != NULL)
 			env_count++;
 
-		previous_size = sizeof(char *) * (env_count);
-		updated_size = sizeof(char *) * (env_count + 2);
-		__environ = _realloc(__environ, previous_size, updated_size);
+		old_size = sizeof(char *) * (env_count);
+		new_size = sizeof(char *) * (env_count + 2);
+		__environ = _realloc(__environ, old_size, new_size);
 		if (__environ == NULL)
 			dispatch_error("Error while _reallocating memory for new env var");
 
@@ -57,22 +57,22 @@ int _setenv(char *name, char *value)
 		free(__environ[env_index]);
 	}
 
-	new_var_len = get_string_length(name) + get_string_length(value) + 2;
+	new_var_len = _strlen(name) + _strlen(value) + 2;
 	/* store the env var either if it exists or it needs to be overwritten */
 	__environ[env_index] = allocate_memory(sizeof(char) * new_var_len);
-	bounded_strcpy(__environ[env_index], name);
-	concatenate_strings(__environ[env_index], "=");
-	concatenate_strings(__environ[env_index], value);
+	_strcpy(__environ[env_index], name);
+	_strcat(__environ[env_index], "=");
+	_strcat(__environ[env_index], value);
 
-	ExitcodeProSet(0);
+	set_process_exit_code(0);
 	return (1);
 }
 
 /**
- * _unsetenv - program that removes an evironment variable
- * @name: parameter for  name for the new env variable
+ * _unsetenv - Removes an evironment variable
+ * @name: Name for the new env variable
  *
- * Return: it returns 1 on success, -1 on error
+ * Return: 1 on success, -1 on error
  */
 int _unsetenv(char *name)
 {
@@ -86,29 +86,29 @@ int _unsetenv(char *name)
 		for (i = env_index; __environ[i] != NULL; i++)
 			__environ[i] = __environ[i + 1];
 
-		ExitcodeProSet(0);
+		set_process_exit_code(0);
 		return (1);
 	}
 
 	/* Var doesn't exist, we can print error or do nothing */
-	ExitcodeProSet(0); /* Indicates that no error ocurred */
+	set_process_exit_code(0); /* Indicates that no error ocurred */
 
 	return (1);
 }
 
 /**
- * _cd - program that changes the current directory of the process
- * @path: parameter for path to which change the working directory
+ * _cd - Changes the current directory of the process
+ * @path: Path to wich change the working directory
  *
- * Return: it returns 1 on success, -1 on error
+ * Return: 1 on success, -1 on error
 */
 int _cd(char *path)
 {
-	char buffer[1024];
+	char buff[1024];
 	char *oldpwd;
 	char *_path = path;
 
-	if (compare_strings(path, "-") == 0)
+	if (_strcmp(path, "-") == 0)
 		path = _getenv("OLDPWD");
 
 	if (path == NULL)
@@ -131,48 +131,48 @@ int _cd(char *path)
 	{
 		free(path);
 		print_builtin_error("cd: can't change cd to ", _path);
-		ExitcodeProSet(1);
+		set_process_exit_code(1);
 		return (-1);
 	}
 	/* Update env variables */
 	_setenv("OLDPWD", oldpwd);
 	_setenv("PWD", path);
 	free(path);
-	ExitcodeProSet(0);
+	set_process_exit_code(0);
 	return (1);
 }
 
 /**
- * _alias - proram that sets an alias command
- * @commands: parameter for list of commands
+ * _alias - Sets an alias command
+ * @commands: List of commands
  *
- * Return: t returns -1 on error, 0 otherwise
+ * Return: -1 on error, 0 otherwise
 */
 int _alias(char **commands)
 {
 	int status = 0;
-	list_t *current;
+	list_t *curr;
 	list_t *out_head = NULL;
 	list_t **alias_addrs = get_alias_head();
 
 	/* the alias args starts from position 1 */
 	if (commands[1] == NULL)
 	{ /* This means to list all the aliases */
-		for (current = *alias_addrs; current != NULL; current = current->next)
+		for (curr = *alias_addrs; curr != NULL; curr = curr->next)
 		{
-			_print_str(current->str);
-			_print_str("\n");
+			_puts(curr->str);
+			_puts("\n");
 		}
-		ExitcodeProSet(0);
+		set_process_exit_code(0);
 		return (1);
 	}
 	/* List aliases and sets the aliases that have the form name=value */
 	status = handle_alias_args(commands, &out_head);
 	/* print listed alias */
-	for (current = out_head; current != NULL; current = current->next)
+	for (curr = out_head; curr != NULL; curr = curr->next)
 	{
-		_print_str(current->str);
-		_print_str("\n");
+		_puts(curr->str);
+		_puts("\n");
 	}
 	/* free list */
 	free_list(out_head);

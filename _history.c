@@ -6,9 +6,9 @@ static list_t *history_head;
 static list_t *last_cmd;
 
 /**
- * get_history_addrss - this program return the address oof history head
+ * get_history_addrss - Return the address oof history head
  *
- * Return: it returns address of history head
+ * Return: Address of history head
 */
 list_t **get_history_addrss()
 {
@@ -40,24 +40,24 @@ list_t **get_last_cmd_addrss()
 }
 
 /**
- * _history - this program prints the all the commands entered by the user
+ * _history - Prints the all the commands entered by the user
  *
- * Return: it returns 1 on success
+ * Return: 1 on success
 */
 int _history(void)
 {
 	list_t *curr;
 	char *str_num;
-	int i, length;
+	int i, len;
 	int count = *get_history_lines_count() % 4096;
 
-	for (current = *get_history_addrss(); current != NULL; current= current->next)
+	for (curr = *get_history_addrss(); curr != NULL; curr = curr->next)
 	{
 		str_num = num_to_str(count++);
-		length = _print_str(str_num);
-		for (i = length; i < 7; i++) /* 5 per number, 2 aditional */
-			_print_str(" ");
-		_print_str(current->str);
+		len = _puts(str_num);
+		for (i = len; i < 7; i++) /* 5 per number, 2 aditional */
+			_puts(" ");
+		_puts(curr->str);
 		_puts("\n");
 		free(str_num);
 	}
@@ -66,18 +66,18 @@ int _history(void)
 }
 
 /**
- * handle_history - this program adds a command to the history
- * @buff: parameter for user's input
+ * handle_history - Adds a command to the history
+ * @buff: User's input
 */
-void handle_history(char *buffer)
+void handle_history(char *buff)
 {
 	/* Only adds a command if is different from the previous one */
-	if (last_cmd == NULL || buffer[0] != ' ' || comp_nstrings(last_cmd->str, buffer) != 0)
-		last_cmd = add_node_end(get_history_addrss(), buffer);
+	if (last_cmd == NULL || buff[0] != ' ' || _strcmp(last_cmd->str, buff) != 0)
+		last_cmd = add_node_end(get_history_addrss(), buff);
 }
 
 /**
- * free_history - this program frees the memory used by history list
+ * free_history - Frees the memory used by history list
 */
 void free_history(void)
 {

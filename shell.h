@@ -37,21 +37,23 @@ typedef struct list_s
 } list_t;
 
 /*linked lists*/
-size_t display_list(const list_t *lst)
+size_t print_list(const list_t *h);
 list_t *add_node_end(list_t **head, const char *str);
 void free_list(list_t *head);
 
 char *get_first_av(void);
 
 /*function with all the logical part that will work with the main */
-int execcmd(char *input, char **cmdList,
-                    char *cmd, int __attribute__((unused))read, char *firstArg);
-void semi_op(char *input, int read, char *firstArg);
-void LogicalOr(char *inputSemicolon, int read, char *firstArg);
-int LogicalAnd(char *inputOr, int read, char *firstArg, int prevFlag);
+int execute_commands(char *buff, char **cmds_list, char *cmd,
+											int read, char *first_av);
+void handling_semicolon_and_operators(char *buff, int read, char *first_av);
+void handling_or(char *buff_semicolon, int read, char *first_av);
+int handling_and(char *buff_semicolon, int read,
+											char *first_av, int prev_flag);
+
 /* Special functions */
-void __attribute__((constructor)) allocate_dynamic_environ(void);
-void __attribute__((destructor)) deallocate_dynamic_environ(void);
+void __attribute__((constructor)) build_dynamic_environ(void);
+void __attribute__((destructor)) free_dynamic_environ(void);
 
 char *_getenv(char *name);
 
@@ -96,108 +98,49 @@ char *_strcpy(char *dest, char *src);
 char *_strncpy(char *dest, char *src, int n);
 
 /* Command handlers */
-int pathhandler(char **commands);
-char *get_path(char *dir, char *filename);
-char **parse_input(char *input, char *delimiter);
-int count_args(char *input, char *delimiter);
+int handle_PATH(char **commands);
+char *getpath(char *dir, char *filename);
+char **parse_user_input(char *str_input, char *delimiter);
+int count_args(char *str_input, char *delimiter);
 
 /* Memory management */
-void *alloc_mem(unsigned int bytes);
-char *dup_str(char *s);
-void free_dbp(char **dp);
-void release_memory(char *buffer, char **cmds_list, char **cmd_args, int flags);
+void *allocate_memory(unsigned int bytes);
+char *duplicate_string(char *str);
+void free_dbl_ptr(char **dbl_ptr);
+void free_allocs(char *buff, char **cmds_list, char **commands, int flags);
 
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size); 
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
 
 /* handle_builtins */
-int processBuiltins(char **args);
+int handle_builtins(char **commands);
 
 /* handle_enter */
-int is_empty_command(char **commands);
+int handle_enter(char **commands);
 /* handle comments in input */
-char *rmvcom(char *input);
+char *handle_comment(char *str_input);
 
 /* Exit handlers */
-int check_exit_cmd(char *user_input, char **cmds_list, char **user_cmds);
-int calcstatus(char *input_buffer);
+int handle_exit(char *buff, char **cmds_list, char **commands);
+int get_exit_status(char *buff);
 
 /* Error handlers */
 void dispatch_error(char *msg);
-void pbuiltin_err(char *error_msg, char *argument);
+void print_builtin_error(char *msg, char *arg);
 
 /* strings functions */
-int get_string_length(const char *str);
-char *duplicate_string(const char *str);
-char *find_character(const char *str, int ch);
-char *concatenate_strings(char *dest, const char *src);
-char *concatenate_strings_n(char *dest, const char *src, size_t n);
-int compare_strings(const char *str1, const char *str2);
-char *number_to_string(int num);
-int comp_nstrings(const char *str1, const char *str2, size_t n);
-int _puts(char *str); 
+int _strlen(const char *s);
+char *_strdup(const char *s1);
+char *_strchr(const char *s, int c);
+char *_strcat(char *s1, const char *s2);
+char *_strncat(char *s1, const char *s2, size_t n);
+char *num_to_str(int num);
+int	_strncmp(const char *s1, const char *s2, size_t n);
+int _puts(char *str);
 
-/* strings01 */
-char *string_concat(char const *str1, char const *str2);
-char *string_subtract(char const *str, unsigned int start, size_t length);
-void free_memory(void **array);
-void delete_string_array(char **array);
-
-/*dollSpecial*/
-void ExitcodeProSet(int program);
-
-/*Get_history_lines_count*/
-void adjust_COUNTLINE(void);
-
-/*Handle_var_replacement*/
-void process_VariableReplace(char **c_md);
-
-/*help*/
-int rd_ln(const int fd, char **ln);
-/*int f_read_line(char **str, char **ln, int fd);*/
-/*int _help(char **command);*/
-
-/*Own_memory*/
-void *_realloc(void *data_ptr, unsigned int previous_size,
-                unsigned int updated_size);
-
-/*puts*/
-int _print_str(char *str);
-
-/*Strcpy*/
-/*char *_strcpy(char *dest, char *src);*/
-
-/*Strncpy*/
-char *bounded_strncpy(char *dest, char *src, int n);
-
-/*Strtok*/
-/*char *_strtok(char *str, char *delimiter);*/
-int is_delimiter_char(char b, char *delimiter);
-
-/*Write_history*/
-/*void write_history(void);*/
-
-/*Firstbuiltin_utils.c*/
-/*int validate_env_name(char *name);
-int is_valid_env_var_name(char *name);*/
-int get_env_index(char *name);
-
-
-/*History.c*/
-/*void handle_history(char *buffer);
-void free_history(void);
-list_t **get_last_cmd_addrss();
-list_t **get_history_addrss();*/
-
-
-/*builtinsFirst.c*/
-/*int _alias(char **commands);*/
-
-
-/*FirstAlias_list.c*/
-/*list_t **get_alias_head();
-int is_set_alias(char *mem_alias_pair);
-void set_alias(char *mem_alias_pair);
-int handle_alias_args(char **commands, list_t **out_addrs);*/
-
+/* f_strings_creations */
+char *f_strjoin(char const *s1, char const *s2);
+char *f_strsub(char const *s, unsigned int start, size_t len);
+void f_strdel(char **as);
+int _strcmp(const char *s1, const char *s2);
 
 #endif /* __SHELL_H */
