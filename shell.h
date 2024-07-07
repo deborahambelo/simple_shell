@@ -45,11 +45,11 @@ char *get_first_av(void);
 
 /*function with all the logical part that will work with the main */
 int execute_commands(char *buff, char **cmds_list, char *cmd,
-											int read, char *first_av);
+int read, char *first_av);
 void handling_semicolon_and_operators(char *buff, int read, char *first_av);
 void handling_or(char *buff_semicolon, int read, char *first_av);
 int handling_and(char *buff_semicolon, int read,
-											char *first_av, int prev_flag);
+char *first_av, int prev_flag);
 
 /* Special functions */
 void __attribute__((constructor)) build_dynamic_environ(void);
@@ -61,7 +61,7 @@ char *_getenv(char *name);
 void handle_var_replacement(char **commands);
 int *process_exit_code();
 void set_process_exit_code(int code);
-void replace_variable(char *input, const char *variable, const char *replacement)
+void replace_variable(char *input, const char *variable, const char *replacement);
 /* builtins */
 void env(void);
 int _setenv(char *name, char *value);
