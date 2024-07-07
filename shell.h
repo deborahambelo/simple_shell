@@ -61,7 +61,7 @@ char *_getenv(char *name);
 void handle_var_replacement(char **commands);
 int *process_exit_code();
 void set_process_exit_code(int code);
-
+void replace_variable(char *input, const char *variable, const char *replacement)
 /* builtins */
 void env(void);
 int _setenv(char *name, char *value);
